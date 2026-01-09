@@ -1,0 +1,516 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Mahima Srivastava | University of Maryland</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background-color: #fff;
+            padding: 40px 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 50px;
+        }
+        
+        .sidebar {
+            position: sticky;
+            top: 40px;
+            align-self: start;
+        }
+        
+        .avatar {
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            margin-bottom: 20px;
+        }
+        
+        h1 {
+            font-size: 1.8em;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+        
+        .subtitle {
+            font-size: 1em;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        
+        .contact {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .contact-item {
+            margin-bottom: 8px;
+            color: #666;
+        }
+        
+        .social-links {
+            margin-top: 20px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        
+        .social-links a {
+            display: inline-block;
+            margin-right: 15px;
+            margin-bottom: 10px;
+            color: #0066cc;
+            text-decoration: none;
+            font-size: 1.2em;
+        }
+        
+        .social-links a:hover {
+            text-decoration: underline;
+        }
+        
+        .main-content {
+            min-width: 0;
+        }
+        
+        h2 {
+            font-size: 1.8em;
+            margin-top: 25px;
+            margin-bottom: 10px;
+            padding-bottom: 5px;
+            border-bottom: 2px solid #eee;
+            font-weight: 600;
+        }
+        
+        h2:first-child {
+            margin-top: 0;
+        }
+        
+        p {
+            margin-bottom: 15px;
+            text-align: justify;
+        }
+        
+        a {
+            color: #0066cc;
+            text-decoration: none;
+        }
+        
+        a:hover {
+            text-decoration: underline;
+        }
+        
+        .publication {
+            margin-bottom: 10px;
+        }
+        
+        .publication-title {
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+        
+        .publication-details {
+            color: #666;
+            font-size: 0.95em;
+            font-style: italic;
+        }
+        
+        .talk-item {
+            margin-bottom: 10px;
+        }
+        
+        .talk-title {
+            font-weight: 500;
+        }
+        
+        .talk-location {
+            color: #666;
+        }
+        .talk-conference {
+            font-style: italic;
+        }
+        
+        .outreach-item {
+            margin-bottom: 15px;
+        }
+        
+        ul {
+            margin-left: 20px;
+            margin-bottom: 15px;
+        }
+        
+        li {
+            margin-bottom: 10px;
+        }
+        
+        .code-section {
+            margin-bottom: 20px;
+        }
+        
+        .graham-scan {
+            max-width: 100%;
+            margin-top: 20px;
+            border-radius: 5px;
+        }
+        
+        @media (max-width: 968px) {
+            .container {
+                grid-template-columns: 1fr;
+                gap: 30px;
+            }
+            
+            .sidebar {
+                position: static;
+                text-align: center;
+            }
+            
+            .avatar {
+                margin-left: auto;
+                margin-right: auto;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.5em;
+            }
+            
+            h2 {
+                font-size: 1.5em;
+            }
+        }
+
+
+        .photo-gallery {
+    margin-top: 10px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+}
+
+.gallery-container {
+    position: relative;
+    width: 100%;
+    height: 200px;
+    overflow: hidden;
+}
+
+.gallery-img {
+    position: absolute;
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    border-radius: 8px;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+    cursor: pointer;
+    pointer-events: none;  /* ADD THIS LINE */
+}
+
+.gallery-img.active {
+    opacity: 1;
+    pointer-events: auto;  /* ADD THIS LINE */
+}
+
+.gallery-img:hover {
+    filter: brightness(1.1);
+}
+
+.gallery-dots {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #ccc;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.dot.active {
+    background-color: #0066cc;
+}
+
+/* Lightbox styles */
+.lightbox {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+.lightbox.show {
+    display: flex;
+}
+
+.lightbox img {
+    max-width: 90%;
+    max-height: 90%;
+    object-fit: contain;
+    border-radius: 8px;
+}
+
+.close-lightbox {
+    position: absolute;
+    top: 20px;
+    right: 40px;
+    font-size: 40px;
+    color: #fff;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.close-lightbox:hover {
+    color: #ccc;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <img src="./assets/img/avatar.png" alt="avatar" class="avatar">
+            <h1>Mahima Srivastava</h1>
+            <div class="subtitle">Ph.D. Candidate</div>
+            <div class="subtitle">University of Maryland College Park</div>
+            
+            <div class="contact">
+                <div class="contact-item">mahimasr (at) umd.edu</div>
+            </div>
+            
+            <div class="social-links">
+                
+                <a href="https://www.linkedin.com/in/mahimasri97/" target="_blank"><i class="fab fa-linkedin"></i> </a>
+                <a href="https://scholar.google.com/citations?user=Vf5yey0AAAAJ&hl=en&oi=ao" target="_blank"><i class="fab fa-google"></i> </a></a>
+                <a href="./assets/files/CV.pdf" target="_blank">CV</a>
+            </div>
+            <div class="photo-gallery">
+    <div class="gallery-container">
+        <img src="./assets/img/photo1.jpg" alt="Photo 1" class="gallery-img active">
+        <img src="./assets/img/photo2.jpg" alt="Photo 2" class="gallery-img">
+        <img src="./assets/img/photo3.jpg" alt="Photo 3" class="gallery-img">
+        <img src="./assets/img/photo4.jpg" alt="Photo 4" class="gallery-img">
+        <img src="./assets/img/photo5.jpg" alt="Photo 5" class="gallery-img">
+        <img src="./assets/img/photo6.jpg" alt="Photo 6" class="gallery-img">
+    </div>
+    <div class="gallery-dots"></div>
+</div>
+
+<!-- Lightbox for enlarged photo -->
+<div class="lightbox" id="lightbox">
+    <span class="close-lightbox">&times;</span>
+    <img src="" alt="Enlarged photo" id="lightbox-img">
+</div>
+        </aside>
+        <main class="main-content">
+            <h2>About</h2>
+            <p>
+                Welcome to my webpage! I am a Chemical Engineering Ph.D. candidate at the <a href="https://chbe.umd.edu" target="_blank">University of Maryland College Park</a>, under the supervision of <a href="https://complexfluids.umd.edu" target="_blank">Dr. Srinivasa R. Raghavan</a>. Prior to that, I worked as a software developer for 2 years at Citicorp Services in Pune, India. I received my bachelor's degree in Chemical Engineering from <a href="https://iitk.ac.in" target="_blank">Indian Institiute of Technology Kanpur</a> in 2019. 
+            </p>
+            <p>
+                My research focuses on designing innovative formulations, from hydrogels that achieve precise drug release kinetics to plastic materials that can degrade on-demand. I'm passionate about translating fundamental science into real-world applications, and I hold two U.S. patents. I am currently collaborating with several startups, including <a href="https://www.medcurainc.com" target="_blank"> Medcura</a>, where we aim to develop "smart" hemostatic materials.
+            </p>
+            <p>
+               <span style="font-weight: bold;"> I am currently on the job market, seeeking opportunities in drug formulation and development, advanced materials, and polymer science. </span>
+            </p>
+
+            <h2>Patents</h2>
+             <div class="publication">
+                <div class="publication-title">
+                    <a>Plastic Products that Can be Rapidly Degraded On-Command. </a> 
+                </div>
+                <div class="publication-details">
+                    <span style="font-weight: bold;">Mahima Srivastava</span>, Hema Choudhary, Ronanld N. Goodman, Srinivasa R. Raghavan
+                    <br> U.S. Provisional Patent Serial No. 63/679,017
+                    
+                </div>
+            </div>
+            <div class="publication">
+                <div class="publication-title">
+                    <a>Soft Materials that Absorb Impact. </a> 
+                </div>
+                <div class="publication-details">
+                    <span style="font-weight: bold;">Mahima Srivastava</span>, Ganesh Sairam, Sai Nikhil Subraveti, Srinivasa R. Raghavan
+                    <br> U.S. Provisional Patent Serial No. 18/640,988
+                    
+                </div>
+            </div>
+
+            <h2>Publications</h2>
+             <div class="publication">
+                <div class="publication-title">
+                    <a href="#"> Plastic Products that Can be Rapidly Degraded On-Demand. </a> 
+                </div>
+                <div class="publication-details">
+                    Submitted.
+                </div>
+            </div>
+            <div class="publication">
+                <div class="publication-title">
+                    <a href="https://advanced.onlinelibrary.wiley.com/doi/full/10.1002/advs.202411942" target="_blank">Switchable Adhesion of Hydrogels to Plant and Animal Tissues</a>
+                </div>
+                <div class="publication-details">
+                    Advanced Science 12(5), 2411942 (2025).
+                </div>
+            </div>
+            <div class="publication">
+                <div class="publication-title">
+                    <a href="https://www.nature.com/articles/s41378-025-00983-7" target="_blank">Geometric Determinants of Sinterless, Low-temperature-processed 3D-Nanoprinted Glass</a>
+                </div>
+                <div class="publication-details">
+                    Microsystems & Nanoengineering 11(1), 145 (2025)
+                </div>
+            </div>
+            <h2>Conference Talks</h2>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="h#" \ target="_blank">Can Hydrogels Mimic the Rheology of Animal Tissues?</a></div>
+                <div class="talk-conference">Pacifichem 2025, Honolulu, HI</div>
+                <div class="talk-location">15-20 December 2025</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="h#" \ target="_blank">Bioplastics that Can be Degraded On-Command within Minutes</a></div>
+                <div class="talk-conference">Pacifichem 2025, Honolulu, HI</div>
+                <div class="talk-location">15-20 December 2025</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="https://aiche.confex.com/aiche/2025/meetingapp.cgi/Paper/715669" \ target="_blank">On-Demand Degradation of Bioplastics into Soil-Enriching Compost</a></div>
+                <div class="talk-conference">2025 AIChE Annual Meeting, Boston, MA</div>
+                <div class="talk-location">2-6 November 2025</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="https://aiche.confex.com/aiche/2025/meetingapp.cgi/Paper/715608" \ target="_blank">Designing Gels That Mimic the Rheology of Animal Tissues</a></div>
+                <div class="talk-conference">2025 AIChE Annual Meeting, Boston, MA</div>
+                <div class="talk-location">2-6 November 2025</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="https://www.rheology.org/sor24a/ViewAuthorProfile?ID=905" \ target="_blank">How Viscoelastic are Tissues? Insights into Tissue Rheology and on Gels That Can Mimic the Same </a></div>
+                <div class="talk-conference">95th Annual Meeting of The Society of Rheology, Austin, TX</div>
+                <div class="talk-location">13-17 October 2024</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="https://www.rheology.org/sor24a/ViewAuthorProfile?ID=905" \ target="_blank">CO<sub>2</sub>-Activated Rheological Transitions: Reversible Transitions Between Wormlike Micelles and Vesicles </a></div>
+                <div class="talk-conference">95th Annual Meeting of The Society of Rheology, Austin, TX</div>
+                <div class="talk-location">13-17 October 2024</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="#" \ target="_blank">Can Plastics be degraded in Minutes? Yes, on-demand! </a></div>
+                <div class="talk-conference">ACS Spring Meeting, New Orleans, LA</div>
+                <div class="talk-location">17-21 March 2024</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="https://www.erasmus.gr/microsites/1221" \ target="_blank">Using CO<sub>2</sub> to Modulate Self-Assembly and Rheology: Viscosity Increase or Decrease in Surfactant Fluids Induced by CO<sub>2</sub></a></div>
+                <div class="talk-conference">XIXth International Congress on Rheology (ICR2023), Athens, Greece</div>
+                <div class="talk-location">29 July-4 August 2023</div>
+            </div>
+            <div class="talk-item">
+                <div class="talk-title" ><a href="https://www.mrs.org/meetings-events/annual-meetings/archive/meeting/presentations/view/2023-mrs-spring-meeting/2023-mrs-spring-meeting-3838854" \ target="_blank">Designing Gels to Absorb Impact—How a Thin Gel Can Protect an Egg from Breaking</a></div>
+                <div class="talk-conference">Materials Research Society Spring Meeting 2023, San Francisco, CA</div>
+                <div class="talk-location"> 10-14 April 2023</div>
+            </div>
+
+            <h2>Outreach</h2>
+            
+            <p>
+                Over the past 4 years, I have mentored 5 undergraduates in our lab. I also received formal training on being a mentor and mentored a high school student as a part of<a href="https://cimerproject.org" target="_blank"> Center for the Improvement of Mentored Experience in Research (CIMER).</a>
+            </p>
+        </main>
+    </div>
+    
+
+
+    <script>
+    // Wait for page to load
+    document.addEventListener('DOMContentLoaded', function() {
+        // Gallery auto-change functionality
+        const images = document.querySelectorAll('.gallery-img');
+        const dotsContainer = document.querySelector('.gallery-dots');
+        let currentIndex = 0;
+
+        // Create dots
+        images.forEach((_, index) => {
+            const dot = document.createElement('span');
+            dot.classList.add('dot');
+            if (index === 0) dot.classList.add('active');
+            dot.addEventListener('click', () => goToSlide(index));
+            dotsContainer.appendChild(dot);
+        });
+
+        const dots = document.querySelectorAll('.dot');
+
+        function showImage(index) {
+            images.forEach(img => img.classList.remove('active'));
+            dots.forEach(dot => dot.classList.remove('active'));
+            
+            images[index].classList.add('active');
+            dots[index].classList.add('active');
+            currentIndex = index;
+        }
+
+        function nextImage() {
+            currentIndex = (currentIndex + 1) % images.length;
+            showImage(currentIndex);
+        }
+
+        function goToSlide(index) {
+            showImage(index);
+        }
+
+        // Auto-change every 10 seconds
+        setInterval(nextImage, 10000);
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightbox-img');
+        const closeLightbox = document.querySelector('.close-lightbox');
+
+        // Add click handler to each image
+        images.forEach((img, index) => {
+            img.addEventListener('click', function(e) {
+                e.preventDefault();
+                console.log('Clicked image src:', this.src); // Debug line
+                lightboxImg.src = this.src;
+                lightbox.classList.add('show');
+                document.body.style.overflow = 'hidden'; // Prevent background scroll
+            });
+        });
+
+        // Close lightbox
+        closeLightbox.addEventListener('click', function() {
+            lightbox.classList.remove('show');
+            document.body.style.overflow = ''; // Restore scroll
+        });
+
+        // Close on background click
+        lightbox.addEventListener('click', function(e) {
+            if (e.target === lightbox) {
+                lightbox.classList.remove('show');
+                document.body.style.overflow = ''; // Restore scroll
+            }
+        });
+    });
+</script>
+</body>
+</html>
